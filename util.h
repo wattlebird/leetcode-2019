@@ -178,3 +178,27 @@ std::string listNodeToString(ListNode* node) {
     }
     return "[" + result.substr(0, result.length() - 2) + "]";
 }
+
+std::string treeNodeToString(TreeNode* root) {
+    if (root == nullptr) {
+      return "[]";
+    }
+
+    std::string output = "";
+    std::queue<TreeNode*> q;
+    q.push(root);
+    while(!q.empty()) {
+        TreeNode* node = q.front();
+        q.pop();
+
+        if (node == nullptr) {
+          output += "null, ";
+          continue;
+        }
+
+        output += std::to_string(node->val) + ", ";
+        q.push(node->left);
+        q.push(node->right);
+    }
+    return "[" + output.substr(0, output.length() - 2) + "]";
+}
