@@ -42,6 +42,17 @@
         "tuple": "cpp",
         "typeinfo": "cpp",
         "utility": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "atomic": "cpp",
+        "cstddef": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "map": "cpp",
+        "memory_resource": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "random": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
     }
 }

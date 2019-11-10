@@ -100,6 +100,32 @@ std::string intervalVectorToString(std::vector<Interval> list) {
     return "[" + rst.substr(0, rst.length() - 2) + "]";
 }
 
+std::vector<std::string> stringToStringVector(std::string& input) {
+    std::vector<std::string> output;
+    trimLeftTrailingSpaces(input);
+    trimRightTrailingSpaces(input);
+    input = input.substr(1, input.length() - 2);
+    std::stringstream ss;
+    ss.str(input);
+    std::string item;
+    char delim = ',';
+    while (getline(ss, item, delim)) {
+        trimLeftTrailingSpaces(item);
+        trimRightTrailingSpaces(item);
+        output.push_back(item);
+    }
+    return output;
+}
+
+std::string stringVectorToString(const std::vector<std::string>& wordvec) {
+    std::string result;
+    for(int index = 0; index < wordvec.size(); index++) {
+        std::string str = wordvec[index];
+        result += str + ", ";
+    }
+    return "[" + result.substr(0, result.length() - 2) + "]";
+}
+
 TreeNode* stringToTreeNode(std::string input) {
     trimLeftTrailingSpaces(input);
     trimRightTrailingSpaces(input);
