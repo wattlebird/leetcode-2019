@@ -133,6 +133,23 @@ std::string integerVectorToString(std::vector<int> list, int length = -1) {
     return "[" + result.substr(0, result.length() - 2) + "]";
 }
 
+std::string doubleVectorToString(std::vector<double> list, int length = -1) {
+    if (length == -1) {
+        length = list.size();
+    }
+
+    if (length == 0) {
+        return "[]";
+    }
+
+    std::string result;
+    for(int index = 0; index < length; index++) {
+        double number = list[index];
+        result += std::to_string(number) + ", ";
+    }
+    return "[" + result.substr(0, result.length() - 2) + "]";
+}
+
 std::string intervalVectorToString(std::vector<Interval> list) {
     if (list.size() == 0) return "[]";
     std::string rst;
