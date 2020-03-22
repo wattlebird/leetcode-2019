@@ -5,31 +5,29 @@ using namespace std;
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        vector<int>::const_iterator b, e, m;
+        if (nums.size() == 0) return -1;
+        int b=0, e=nums.size();
         if (nums.front() > nums.back()) {
-            b = nums.begin(), e = nums.end() - 1;
             while (e - b > 1) {
-                m = b + (e - b) / 2;
-                if (*m < *b) e = m;
-                else b = m;
+                int m = b + (e - b) / 2;
+                if (nums[m] > nums.front()) b = m;
+                else e = m;
             }
-            if (*b < target) return -1;
-            if (*e > target) return -1;
-            m = e;
-            if (nums.front() <= target) {b = nums.begin(); e = m;}
-            else {b = m; e = nums.end();}
-        } else {
-            b = nums.begin();
-            e = nums.end();
+            if (nums.front() <= target) {
+                b = 0;
+            } else {
+                b = e;
+                e = nums.size();
+            }
         }
-        while (e - b > 1) {
-            m = b + (e - b) / 2;
-            if (*m == target) return m-nums.begin();
-            else if (*m > target) e = m;
-            else b = m;
+        
+        while (b != e) {
+            int m = b + (e - b) / 2;
+            if (nums[m] >= target) e = m;
+            else b = m + 1;
         }
-        if (*b != target) return -1;
-        else return b - nums.begin();
+        if (b < nums.size() && nums[b] == target) return b;
+        else return -1;
     }
 };
 
