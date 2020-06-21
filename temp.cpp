@@ -1,46 +1,89 @@
 #include "util.h"
 #include <queue>
-#include <set>
+#include <map>
 
 using namespace std;
 
+typedef unsigned long long ll;
+
 class Solution {
 public:
-    int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k) {
-        int mod = 1000000007;
-        auto comp = [speed, efficiency](int i, int j){return speed[i] * efficiency[i] < speed[j] * efficiency[j];};
-        vector<int> index(n, 0);
-        for( int i = 0; i < n; i++) index[i] = i;
-        priority_queue<int, vector<int>, decltype(comp)> Q(index.begin(), index.end(), comp);
-        long long rtn = 0, cnt = 0, e = 0, s = 0;
-        while (!Q.empty() && cnt < k) {
-            int i = Q.top();
-            Q.pop();
-            if (rtn == 0) {
-                e = efficiency[i];
-                s = speed[i];
-                rtn = (e*s)%mod;
-                cnt++;
-            } else {
-                double ds = speed[i], de = efficiency[i] < e ? e - efficiency[i] : 0;
-                if ((de / e) < (ds / (s+ds))) {
-                    e = e < efficiency[i] ? e : efficiency[i];
-                    s+= speed[i];
-                    rtn = (e*s)%mod;
-                    cnt++;
+    int numOfWays(int n) {
+        //unsigned int mod = 1;
+        string cur;
+        dfs(0, cur);
+        map<string, ll> rst;
+        if (n == 1) return 12;
+        else {
+            for(auto p: G) rst[p.first] = 1;
+            while (--n > 0) {
+                map<string, ll> n;
+                for(auto p: rst) {
+                    for(auto q: G[p.first]) {
+                        n[q] += p.second;
+                        //n[q] %= mod;
+                    }
                 }
+                rst = n;
             }
+        }
+        int rtn = 0;
+        for(auto p: rst) {
+            rtn += p.second;
         }
         return rtn;
     }
+private:
+    void dfs(int depth, string& cur) {
+        if (depth == 3) {
+            string nxt;
+            ddfs(cur, nxt);
+        } else {
+            for(auto c: colors) {
+                int flag = false;
+                if (cur.size() == 0) {
+                    flag = true;
+                    cur.push_back(c);
+                    dfs(1, cur);
+                } else if (cur.back() != c) {
+                    flag = true;
+                    cur.push_back(c);
+                    dfs(depth+1, cur);
+                }
+                if (flag) cur.pop_back();
+            }
+        }
+    }
+    
+    void ddfs(const string& cur, string& nxt) {
+        if (nxt.size() == 3) {
+            if (G.count(cur) == 0) G[cur] = vector<string>{nxt};
+            else if (find(G[cur].begin(), G[cur].end(), nxt) == G[cur].end()) G[cur].push_back(nxt);
+            return;
+        }
+        for(int c: colors) {
+            int flag = false;
+            if (nxt.size() == 0) {
+                if (c != cur[0]) {nxt.push_back(c); flag = true;}
+            } else {
+                if (c != cur[nxt.size()] && c != nxt.back()) {nxt.push_back(c); flag = true;}
+            }
+            if (flag) {
+                ddfs(cur, nxt);
+                nxt.pop_back();
+            }
+        }
+    }
+    map<string, vector<string>> G;
+    vector<char> colors = {'0','1','2'};
 };
 
 
 int main() {
-    vector<int> e = {5,4,3,9,7,2};
-    vector<int> s = {2,10,3,1,5,8};
-    cout<< Solution().maxPerformance(6, s, e, 2)<<endl;
-    cout<< Solution().maxPerformance(6, s, e, 3)<<endl;
-    cout<< Solution().maxPerformance(6, s, e, 4)<<endl;
+    cout<< Solution().numOfWays(2)<<endl;
+     cout<< Solution().numOfWays(3)<<endl;
+      cout<< Solution().numOfWays(7)<<endl;
+      cout<< Solution().numOfWays(7)<<endl;
+       cout<< Solution().numOfWays(5000)<<endl;
     return 0;
 }
