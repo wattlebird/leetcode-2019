@@ -39,6 +39,7 @@ struct ListNode {
     int val;
     ListNode *next;
     ListNode(int x) : val(x), next(NULL) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
 void trimLeftTrailingSpaces(std::string &input) {
@@ -129,6 +130,23 @@ std::string integerVectorToString(std::vector<int> list, int length = -1) {
     for(int index = 0; index < length; index++) {
         int number = list[index];
         result += std::to_string(number) + ", ";
+    }
+    return "[" + result.substr(0, result.length() - 2) + "]";
+}
+
+std::string booleanVectorToString(std::vector<bool> list, int length = -1) {
+    if (length == -1) {
+        length = list.size();
+    }
+
+    if (length == 0) {
+        return "[]";
+    }
+
+    std::string result;
+    for(int index = 0; index < length; index++) {
+        std::string itm = list[index] ? "true" : "false";
+        result += itm + ", ";
     }
     return "[" + result.substr(0, result.length() - 2) + "]";
 }
