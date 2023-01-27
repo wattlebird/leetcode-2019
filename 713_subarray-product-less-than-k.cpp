@@ -5,16 +5,15 @@ using namespace std;
 class Solution {
 public:
     int numSubarrayProductLessThanK(vector<int>& nums, int k) {
-        if (nums.size() == 0) return 0;
-        int cur = 1, cnt = 0;
-        for (int l = 0, r = l; l < nums.size(); l++) {
-            r = l < r ? r : l;
-            while (cur < k && r < nums.size()) {
-                cur *= nums[r++];
+        int b = 0, e = 0, cnt = 0, prod = 1;
+        while (b < nums.size()) {
+            e = max(e, b);
+            while (prod < k && e < nums.size()) {
+                prod *= nums[e++];
             }
-            if (cur >= k && r != l) {cur /= nums[--r];}
-            cnt += (r-l);
-            if (r != l) cur /= nums[l];
+            cnt += e - b;
+            if (e != b && prod >= k) cnt--;
+            prod /= nums[b++];
         }
         return cnt;
     }
