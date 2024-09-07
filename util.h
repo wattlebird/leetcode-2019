@@ -305,3 +305,12 @@ std::string treeNodeToString(TreeNode* root) {
     }
     return "[" + output.substr(0, output.length() - 2) + "]";
 }
+
+std::string vectorOfIntegerVectorToString(std::vector<std::vector<int>> input) {
+    std::string rtn = "[\n";
+    for(auto v: input) {
+        rtn += "\t" + integerVectorToString(v) + "\n";
+    }
+    rtn += "]";
+    return rtn;
+}
